@@ -9,9 +9,9 @@ volumes:
     driver: local
 
 services:
-  svelte-altlokalt:
-    image: valiantlynx/svelte-altlokalt:latest
-    container_name: svelte-altlokalt
+  python-development-environment:
+    image: valiantlynx/python-development-environment:latest
+    container_name: python-development-environment
     restart: always
     networks:
       - monitoring
@@ -28,7 +28,7 @@ services:
       - ./certbot/logs:/var/log/letsencrypt
       - ./certbot/www:/var/www/certbot
     depends_on:
-      - svelte-altlokalt
+      - python-development-environment
       - grafana
     restart: unless-stopped
     networks:
