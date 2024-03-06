@@ -1,4 +1,5 @@
-# this is a template for making python projects
+# Python Project Environment Setup Template
+
 it has docker-compose for development and deploying. it also configured with .devcontainer så you can go into the container and work on it from there. another way is it has python environment using the commands in run.sh or run.bat.
 
 
