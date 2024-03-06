@@ -4,7 +4,7 @@ run-name: ${{ github.actor }} is deploying 🚀🚀🚀
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["svelte-altlokalt"]  # This triggers the deployment after ollama-docker workflow completes
+    workflows: ["python-development-environment"]  # This triggers the deployment after python-development-environment workflow completes
     types:
       - completed
 

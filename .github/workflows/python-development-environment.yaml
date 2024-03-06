@@ -1,6 +1,6 @@
-name: svelte-altlokalt
+name: python-development-environment
 
-run-name: ${{ github.actor }} is building svelte-altlokalt image 📷
+run-name: ${{ github.actor }} is building python-development-environment 🚀
 
 on:
   push:
@@ -21,7 +21,7 @@ on:
 
 jobs:
   build-and-push-images:
-    name: Build svelte-altlokalt
+    name: Build python-development-environment
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -69,8 +69,8 @@ jobs:
       uses: docker/metadata-action@v3
       with:
         images: |
-          ${{ secrets.DOCKER_HUB_USERNAME }}/svelte-altlokalt
-          ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/svelte-altlokalt
+          ${{ secrets.DOCKER_HUB_USERNAME }}/python-development-environment
+          ghcr.io/${{ secrets.DOCKER_HUB_USERNAME }}/python-development-environment
         flavor: |
           latest=false
         tags: |
@@ -89,7 +89,7 @@ jobs:
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
         context: .
-        file: ./Dockerfile.solo
+        file: ./Dockerfile
 
     - name: Show image digest
       run: |

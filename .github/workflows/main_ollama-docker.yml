@@ -1,12 +1,12 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy container app to Azure Web App - ollama-docker
+name: Build and deploy container app to Azure Web App - python-development-environment
 
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["ollama-docker"]  # This triggers the deployment after ollama-docker workflow completes
+    workflows: ["python-development-environment"]  # This triggers the deployment after python-development-environment workflow completes
     types:
       - completed
 
@@ -22,8 +22,8 @@ jobs:
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'ollama-docker'
+        app-name: 'python-development-environment'
         slot-name: 'production'
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_08E3A555EDB44342ACE847844A9FBCBF }}
-        images: 'index.docker.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_4216062F7E1E4503954D1228672732B6 }}/ollama-docker:commit-${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_4216062F7E1E4503954D1228672732B6 }}/python-development-environment:commit-${{ github.sha }}'
 
