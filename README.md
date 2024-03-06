@@ -49,7 +49,6 @@ we need some env variables for authentication in git hub action. go back to over
 first the login stuff. go to (your repository)https://github.com/valiantlynx/python-development-environment/settings/secrets/actions and make these repository secrets(you might see two env variables azure made delete them)
 if your planing to use azure
 - AZUREAPPSERVICE_PUBLISHPROFILE = the thing you downloaded and copied
-- AZUREAPPSERVICE_CONTAINERUSERNAME = the name you gave your container instance
 
 now the next time you commit to there is a succesfull pull or push to the main branch and the docker image is on docker hub then azure will redeploy
 

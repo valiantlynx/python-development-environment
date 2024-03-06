@@ -26,5 +26,5 @@ jobs:
         app-name: 'python-development-environment'
         slot-name: 'production'
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-        images: 'index.docker.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME }}/python-development-environment:commit-${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/python-development-environment:commit-${{ github.sha }}'
 
