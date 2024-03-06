@@ -52,7 +52,7 @@ if your planing to use azure
 
 now the next time you commit to there is a succesfull pull or push to the main branch and the docker image is on docker hub then azure will redeploy
 
-to see the app azure provides a free url something like https://python-development-environment.azurewebsites.net/ go there and you might have to wait like 10 min the first time around
+to see the app azure provides a free url something like https://python-development-environment.azurewebsites.net/ go there and you might have to wait like 10 min the first time around. or make a commit again a couple times
 
 # terrafrom
 this does alot for and is simpler to set up. 
