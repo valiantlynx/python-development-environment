@@ -1,0 +1,139 @@
+---
+version: '3.8'
+
+volumes:
+  portainer_data:
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+
+services:
+  svelte-altlokalt:
+    image: valiantlynx/svelte-altlokalt:latest
+    container_name: svelte-altlokalt
+    restart: always
+    networks:
+      - monitoring
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/logs:/var/log/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    depends_on:
+      - svelte-altlokalt
+      - grafana
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/logs:/var/log/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    networks:
+      - monitoring
+    command: >
+      certonly --webroot -w /var/www/certbot --force-renewal --email valiantlynxz@gmail.com
+      -d altlokal.no -d www.altlokal.no
+      -d altlokalt.com -d www.altlokalt.com
+      -d digilokal.no -d www.digilokal.no
+      -d digilokale.com -d www.digilokale.com
+      -d digilokale.no -d www.digilokale.no
+      -d dinlokal.no -d www.dinlokal.no
+      -d minlokal.no -d www.minlokal.no
+      -d blioppdage.com -d www.blioppdage.com
+      -d blioppdage.no -d www.blioppdage.no
+      -d blioppdaget.com -d www.blioppdaget.com
+      -d bovimobilitet.no -d www.bovimobilitet.no
+      -d bovimobility.com -d www.bovimobility.com
+      -d bovimobility.no -d www.bovimobility.no
+      -d digicv.no -d www.digicv.no
+      -d digisoknad.no -d www.digisoknad.no
+      -d godtilbud.no -d www.godtilbud.no
+      -d kunstivestfold.no -d www.kunstivestfold.no
+      -d minlokale.com -d www.minlokale.com
+      -d monitor.altlokalt.com
+      -d kuma.altlokalt.com
+      -d portainer.altlokalt.com
+      --agree-tos --non-interactive
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - /etc/prometheus:/config
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command: "--config.file=/etc/prometheus/prometheus.yml"
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    command: 
+      - '--path.rootfs=/host'
+    pid: host
+    restart: unless-stopped
+    networks:
+      - monitoring
+    volumes:
+      - '/:/host:ro,rslave'
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    restart: unless-stopped
+    privileged: true
+    devices:
+      - /dev/kmsg
+    networks:
+      - monitoring
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    volumes:
+      - ./uptime-kuma:/app/data
+    restart: always
+    networks:
+      - monitoring
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - monitoring
+      
+networks:
+  monitoring: {}
