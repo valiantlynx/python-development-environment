@@ -20,10 +20,11 @@ jobs:
     steps:
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
+      if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'python-development-environment'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_08E3A555EDB44342ACE847844A9FBCBF }}
-        images: 'index.docker.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_4216062F7E1E4503954D1228672732B6 }}/python-development-environment:commit-${{ github.sha }}'
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+        images: 'index.docker.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME }}/python-development-environment:commit-${{ github.sha }}'
 

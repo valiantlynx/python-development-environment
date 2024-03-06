@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "svelte-altlokalt-terraform"
+    bucket = "python-development-environment"
     key    = "dev/terraform.tfstate"
     region = "eu-north-1"
   }
