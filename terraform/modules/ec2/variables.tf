@@ -11,15 +11,20 @@ variable "subnets" {
 variable "ec2_names" {
     description = "EC2 names"
     type = list(string)
-    default = ["altlokalt1"] # e.g ["altlokalt1", "altlokalt2"]
+    default = ["python-development-environment1"] # e.g ["python-development-environment1", "python-development-environment2"]
 }
 
 variable "key_name" {
-  description = "Key name for altlokalt EC2"
+  description = "Key name for python-development-environment EC2"
   type = string
 }
 
 variable "private_key_path" {
   description = "Key full path"
   type = string
+}
+
+variable "cloudflare_zone_ids" {
+  type = map(string)
+  description = "Mapping of domain names to Cloudflare zone IDs"
 }
