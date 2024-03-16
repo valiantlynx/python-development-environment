@@ -8,7 +8,7 @@ debugpy.listen(("0.0.0.0", 5678))
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World1 ass wiper"}
+    return {"Hello": "World ass wiper"}
 
 
 @app.get("/items/{item_id}")
