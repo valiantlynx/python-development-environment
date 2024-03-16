@@ -27,6 +27,23 @@ resource "aws_instance" "web" {
   }
 }
 
+
+data "template_file" "cloudflare_vars" {
+  template = <<-EOT
+    ---
+    cloudflare_zone_ids:
+      %{ for domain, zone_id in var.cloudflare_zone_ids ~}
+      "${domain}": "${zone_id}"
+      %{ endfor ~}
+  EOT
+}
+
+resource "local_file" "cloudflare_vars_file" {
+  filename = "${abspath(path.module)}/../../../ansible/vars/cloudflare_vars.yml"
+  content  = data.template_file.cloudflare_vars.rendered
+}
+
+
 data "template_file" "inventory" {
   template = <<-EOT
     [ec2_instances:children]
@@ -52,14 +69,21 @@ resource "local_file" "dynamic_inventory" {
   }
 }
 
+
 resource "null_resource" "run_ansible" {
-  depends_on = [local_file.dynamic_inventory]
+  depends_on = [
+    local_file.dynamic_inventory,
+    local_file.cloudflare_vars_file
+    ]
 
   provisioner "local-exec" {
     command = <<EOF
       sleep 30;
       sudo apt update -y;
-      env ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${self.triggers.inventory_file} ../../../ansible/deploy-app.yml
+      cd ../../../ansible/;
+      ls -a;
+      ls deploy-app.yml;
+      env ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${self.triggers.inventory_file} deploy-app.yml -vvv
     EOF
 
     working_dir = path.module

@@ -35,6 +35,6 @@ resource "aws_security_group" "sg" {
   }
 
   tags = {
-    Name = "MyAltlokaltSecurityGroup"
+    Name = "Mypython-development-environmentSecurityGroup"
   }
 }
